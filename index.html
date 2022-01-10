@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="css/style.css">
+	<title>Document</title>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+
+	<div class="wrapper">
+		<header class="header">
+			<div class="container">
+				<div class="header__body">
+					<div class="header__burger burger">
+						<span></span>
+					</div>
+					<div class="header__logo logo">
+						List Project
+					</div>
+				</div>
+			</div>
+		</header>
+		<main class="main">
+			<div class="container">
+				<div class="main__body">
+					<div class="word-list">
+						<div class="word-list__search-section section-search">
+							<form class="section-search__form" name="form-for-searching">
+								<div class="section-search__input">
+									<input id="searchingInput" name="searchingInput" type="text" placeholder="Search the word">
+									<div class="section-search__search-results results-search">
+										<ul class="results-search__list">
+										</ul>
+									</div>
+								</div>
+								<button class="button clear-storage" type="button">Find</button>
+							</form>
+						</div>
+						<div class="word-list__words words">
+							<ul class="words__list">
+
+							</ul>
+						</div>
+					</div>
+					<div class="main__inner">
+						<div class="show-word">
+
+						</div>
+						<div class="decor"></div>
+						<div class="add-word">
+							<form class="add-word__form" name="add-new-word">
+								<input class="add-word__new" type="text" required name="new-word" value=""
+									placeholder="New word">
+								<input class="add-word__translation" type="text" required name="translation" value=""
+									placeholder="Translation">
+								<input class="add-word__other-translations" type="text" name="other-translations" value=""
+									placeholder="Other-translations">
+								<textarea class="add-word__examples" name="examples"
+									placeholder="Use exmple or exmples"></textarea>
+								<input class="add-word__synonyms" type="text" name="synonyms" value="" placeholder="Synonyms">
+								<input class="add-word__antonyms" type="text" name="antonyms" value="" placeholder="Antonyms">
+								<button class="add-word__button button" type="submit">Add the word</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<footer class="footer">
+
+		</footer>
+	</div>
+
+	<script type="module" src="js/script.js"></script>
+</body>
+
+</html>
