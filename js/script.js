@@ -191,7 +191,7 @@ wordsList.addEventListener('click', (e) => {
 					</h2>
 					<div class="show-word__content">
 					${Array.isArray(theWordObjectValue)
-					? theWordObjectValue.reduce((previnfoItem, currentInfoItem) => `${previnfoItem}<br>${currentInfoItem}`, '')
+					? theWordObjectValue.reduce((previnfoItem, currentInfoItem) => `${previnfoItem}<br>${currentInfoItem}`)
 					: theWordObjectValue}
 					</div >
 				</div >
@@ -214,14 +214,14 @@ addNewWordForm.addEventListener('submit', (e) => {
 		"word": newWord,
 		"translation": translation,
 		"Other_translations": otherTranslations,
-		"Use_examples": examples,
+		"Use_examples": examples.split('\n'),
 		"Synonyms": synonyms,
 		"Antonyms": antonyms,
 	}));
 
 	Array.from(addNewWordForm.elements).forEach(element => element.value = '');
 
-	fillInTheListOfWords(wordsList, "words__word");
+	fillInTheListOfWords(wordsList, "words__word", 'allWords');
 });
 
 searchingInput.addEventListener('input', () => {
