@@ -4,67 +4,88 @@ const fetchedWords = [
 	{
 		"word": "conclusion",
 		"translation": "висновок",
-		"Other_translations": "завершення, закінчення, результат",
-		"Use_examples": [
-			"the conclusion of a free-trade accord",
-			"the conclusion of World War Two",
-			"the conclusion of a free-trade accord",
-			"each research group came to a similar conclusion"
+		"other_translations": "завершення, закінчення, результат",
+		"use_examples": [
+			"Eeach research group came to a similar conclusion.-Кожна з груп прийшла до однакового висновку.",
 		],
-		"Synonyms": "end, finish, close, termination"
+		"synonyms": "end, finish, close, termination",
+		"antonyms": ""
 	},
 	{
 		"word": "pillow",
 		"translation": "подушка",
-		"Other_translations": "підкладка, подушечка, класти голову",
-		"Synonyms": "cushion, bolster, headrest, lay, rest"
+		"other_translations": "підкладка, подушечка, класти голову",
+		"use_examples": [],
+		"synonyms": "cushion, bolster, headrest, lay, rest",
+		"antonyms": ""
 	},
 	{
 		"word": "dictionary",
 		"translation": "словник",
-		"Other_translations": "довідник",
-		"Use_examples": [
-			"I'll look up ‘love’ in the dictionary",
-			"the dictionary definition of ‘smile’",
-			"the website gives access to an online dictionary"
+		"other_translations": "довідник",
+		"use_examples": [
+			"I'll look up ‘love’ in the dictionary.-Я знайду в словнику слово «любов».",
+			"The dictionary definition of ‘smile’.-Cловникове визначення слова «усмішка».",
+			"The website gives access to an online dictionary.-Цей сайт дає доступ до онлайн словника."
 		],
-		"Synonyms": "lexicon, glossary, word list"
+		"synonyms": "lexicon, glossary, word list",
+		"antonyms": ""
 	},
 	{
 		"word": "translation",
 		"translation": "переклад",
-		"Other_translations": "процес перекладу, пояснення",
-		"Use_examples": [
-			"the translation of the relics of St. Thomas of Canterbury",
-			"the translation of research findings into clinical practice"
-		]
+		"other_translations": "процес перекладу, пояснення",
+		"use_examples": [
+			"The translation of the relics of St. Thomas of Canterbury.-Переклад мощей святого Фоми Кентерберійського",
+			"The translation of research findings into clinical practice.-Переведення результатів досліджень у клінічну практику."
+		],
+		"synonyms": "",
+		"antonyms": ""
 	},
 	{
 		"word": "process",
 		"translation": "процес",
-		"Use_examples": [
-			"the aging process"
-		]
+		"other_translations": "",
+		"use_examples": [
+			"The aging process.-Процес старіння."
+		],
+		"synonyms": "",
+		"antonyms": ""
 	},
 	{
 		"word": "aging",
 		"translation": "старіння",
-		"Other_translations": "дозріваючий, старіючий",
-		"Use_examples": [
-			"the external signs of aging",
-			"an aging population"
-		]
+		"other_translations": "дозріваючий, старіючий",
+		"use_examples": [
+			"The external signs of aging.-Зовнішні ознаки старіння.",
+			"An aging population.-Старіюче населення."
+		],
+		"synonyms": "",
+		"antonyms": ""
 	}
 ];
 
+const classes = {
+	wordsListFromStorage: 'words__list',
+	wordsListForSearchedWords: 'results-search__list',
+	searchedWord: 'results-search__word',
+	wordInList: 'words__word',
+	deleteTheWordButton: 'delete-word',
+	editTheWordButton: 'edit-word',
+};
+
+const body = document.querySelector("body");
 const burger = document.querySelector(".header__burger");
-const wordsList = document.querySelector(".words__list");
+const wordList = document.querySelector(".word-list");
+const listForWordsFromStorage = document.querySelector(`.${classes.wordsListFromStorage}`);
 const showFullInfo = document.querySelector(".show-word");
 const addNewWordForm = document.forms["add-new-word"];
 const clearStoageButton = document.querySelector(".clear-storage");
 const searchingForm = document.forms["form-for-searching"];
 const searchingInput = searchingForm["searchingInput"];
 const searchListResult = document.querySelector(".results-search__list");
+const searchResult = document.querySelector(".results-search");
+const addNewFuildButton = document.querySelector(".add-new-field");
 
 burger.addEventListener('click', () => {
 	burger.classList.toggle('active');
@@ -76,11 +97,29 @@ burger.addEventListener('click', () => {
 
 clearStoageButton.addEventListener('click', () => {
 	localStorage.clear();
-	fillInTheListOfWords(wordsList, "words__word");
+	fillInTheListOfWords(listForWordsFromStorage, classes.wordInList);
 	console.log('Сховище очищене!');
 });
 
+addNewFuildButton.addEventListener('click', () => {
+	const translateToLastExampleName = addNewWordForm['use-examples'].lastElementChild.name;
+	const exampleNumber = translateToLastExampleName.substring(translateToLastExampleName.length - 1);
+
+	addNewWordForm['use-examples'].insertAdjacentHTML('beforeend', `
+		<textarea class="add-word__examples" name="example${+exampleNumber + 1}" placeholder="Enter example №${+exampleNumber + 1}"></textarea>
+		<textarea class="add-word__examples" name="translate-to-example${+exampleNumber + 1}" placeholder="Enter translate to example №${+exampleNumber + 1}"></textarea>
+	`);
+});
+
 //==============<functions>============================================================
+
+function removeClassesForBurger() {
+	burger.classList.remove('active');
+	wordList.classList.remove('open');
+	if (window.innerWidth <= 768) {
+		body.classList.remove('_lock');
+	}
+}
 
 // функція для завантаження слів у localStorage
 // виконується один раз і тільки після завантаження сторінки
@@ -109,7 +148,7 @@ function fillInTheListOfWords(parentForWords, classNameForChildren, method, word
 	switch (method) {
 		case 'allWords':
 			Object.keys(window.localStorage).forEach((word) => (
-				wordsToFillIn.push({ [word]: getWordObjectFromStorage(word).translation })
+				wordsToFillIn.push(`${word}-${getWordObjectFromStorage(word).translation}`)
 			));
 			break;
 		case 'singleWord':
@@ -117,7 +156,7 @@ function fillInTheListOfWords(parentForWords, classNameForChildren, method, word
 				const wordObject = getWordObjectFromStorage(word),
 					translation = wordObject.translation;
 				if (wordOrPart && (word.startsWith(wordOrPart) || translation.startsWith(wordOrPart)))
-					wordsToFillIn.push({ [word]: getWordObjectFromStorage(word).translation })
+					wordsToFillIn.push(`${word}-${getWordObjectFromStorage(word).translation}`)
 			});
 			break;
 		default:
@@ -125,15 +164,15 @@ function fillInTheListOfWords(parentForWords, classNameForChildren, method, word
 	}
 
 	wordsToFillIn.sort((a, b) => {
-		return Object.keys(a) < Object.keys(b);
-	});
+		return a.localeCompare(b);
+	}).reverse();
 
-	wordsToFillIn.forEach((wordObject) => {
+	wordsToFillIn.forEach((wordText) => {
 		parentForWords.insertAdjacentHTML('afterbegin', `
 		<li class="${classNameForChildren}" >
-			<span class="word">${Object.keys(wordObject)}</span>
+			<span class="word">${wordText.split('-')[0]}</span>
 			-
-			<span class="translation">${wordObject[Object.keys(wordObject)]}</span>
+			<span class="translation">${wordText.split('-')[1]}</span>
 		</li>
 		`)
 	})
@@ -146,34 +185,30 @@ function getWordObjectFromStorage(key) {
 	return JSON.parse(localStorage.getItem(key));
 }
 
-//==============</functions>============================================================
+// функція для виведення абзаців з прикладами до слова
+function showExamples(theWordObjectValue) {
+	let examples = '';
+	theWordObjectValue.forEach((text, i) => {
+		examples += `
+		<p class="example">${theWordObjectValue[i].substring(0, theWordObjectValue[i].indexOf('-'))}</p>
+		<p class="translate">${theWordObjectValue[i].substring(theWordObjectValue[i].indexOf('-') + 1)}</p>
+		`;
+	})
+	return examples;
+}
 
-window.addEventListener('load', () => {
-	loadLocalStorage(fetchedWords);
-	fillInTheListOfWords(wordsList, "words__word", 'allWords');
-});
-
-wordsList.addEventListener('click', (e) => {
-	let target = e.target;
-
-	if (target.classList.contains('words__list')) {
-		return 0;
-	}
-
-	if (!target.classList.contains('words__word')) {
-		target = target.parentElement;
-	}
-
-	let theWord = target.firstElementChild.textContent;
-	let theTranslation = target.lastElementChild.textContent;
-	let children = Array.from(showFullInfo.children);
-	let theWordObject = getWordObjectFromStorage(theWord)
+// фунуція для відображення всієї інформації про слово
+function displayFullWordInfo(parentForInfo, clickedWord) {
+	const children = Array.from(parentForInfo.children),
+		theWord = clickedWord.firstElementChild.textContent,
+		theTranslation = clickedWord.lastElementChild.textContent,
+		theWordObject = getWordObjectFromStorage(theWord);
 
 	if (children.length) {
 		children.forEach(child => child.remove())
 	}
 
-	showFullInfo.insertAdjacentHTML('beforeend', `
+	parentForInfo.insertAdjacentHTML('beforeend', `
 		<div class="show-word__word">
 			<span class="word"> ${theWord}</span>
 			-
@@ -182,50 +217,168 @@ wordsList.addEventListener('click', (e) => {
 	`);
 
 	for (let theWordObjectKey in theWordObject) {
-		if (theWordObjectKey !== 'word' && theWordObjectKey !== 'translation' && theWordObject[theWordObjectKey] !== '') {
-			let theWordObjectValue = theWordObject[theWordObjectKey];
-			showFullInfo.insertAdjacentHTML('beforeend', `
+		let theWordObjectValue = theWordObject[theWordObjectKey];
+		if (theWordObjectKey !== 'word' && theWordObjectKey !== 'translation' && theWordObjectValue.length) {
+			parentForInfo.insertAdjacentHTML('beforeend', `
 				<div class="show-word__block">
 					<h2 class="show-word__title">
 					${theWordObjectKey.split('_').reduce((prevTitlePart, titlePart) => `${prevTitlePart} ${titlePart}`, '')}
 					</h2>
 					<div class="show-word__content">
 					${Array.isArray(theWordObjectValue)
-					? theWordObjectValue.reduce((previnfoItem, currentInfoItem) => `${previnfoItem}<br>${currentInfoItem}`)
+					? showExamples(theWordObjectValue)
 					: theWordObjectValue}
 					</div >
 				</div >
 			`);
 		}
 	}
+
+	parentForInfo.insertAdjacentHTML('beforeend', `
+		<button class="button button-for-word ${classes.deleteTheWordButton}">Delete word</button>
+		<button class="button button-for-word ${classes.editTheWordButton}">Edit word</button>
+	`);
+
+	document.querySelector(`.${classes.deleteTheWordButton}`).addEventListener('click', () => deleteTheWord(theWord));
+	document.querySelector(`.${classes.editTheWordButton}`).addEventListener('click', () => editTheWord(theWord));
+}
+
+function deleteTheWord(theWord) {
+	localStorage.removeItem(theWord);
+	fillInTheListOfWords(listForWordsFromStorage, classes.wordInList, 'allWords');
+}
+
+function editTheWord(theWord) {
+	const theWordObject = getWordObjectFromStorage(theWord),
+		examplesLength = theWordObject['use_examples'].length;
+
+	if (examplesLength) {
+		addNewWordForm['example1'].value =
+			theWordObject['use_examples'][0].substring(0, theWordObject['use_examples'][0].indexOf('-'));
+		addNewWordForm['translate-to-example1'].value =
+			theWordObject['use_examples'][0].substring(theWordObject['use_examples'][0].indexOf('-') + 1);
+
+		if (examplesLength >= 2) {
+			theWordObject['use_examples'].forEach((example, index) => {
+				if (index >= 1) {
+					addNewWordForm['use-examples'].insertAdjacentHTML('beforeend', `
+						<textarea class="add-word__examples"
+						name="example${+index + 1}"
+						placeholder="Enter example №${+index + 1}"
+						value="${example.substring(0, example.indexOf('-'))}"
+						>${example.substring(0, example.indexOf('-'))}</textarea>
+						<textarea class="add-word__examples" 
+						name="translate-to-example${+index + 1}" 
+						placeholder="Enter translate to example №${+index + 1}"
+						value="${example.substring(example.indexOf('-') + 1)}"
+						>${example.substring(example.indexOf('-') + 1)}</textarea>
+					`);
+				}
+			})
+		}
+	}
+
+	addNewWordForm['new-word'].value = theWordObject.word;
+	addNewWordForm['translation'].value = theWordObject.translation;
+	addNewWordForm['other-translations'].value = theWordObject?.Other_translations || '';
+	addNewWordForm['synonyms'].value = theWordObject?.Synonyms || '';
+	addNewWordForm['antonyms'].value = theWordObject?.Antonyms || '';
+}
+
+//==============</functions>============================================================
+
+window.addEventListener('load', () => {
+	loadLocalStorage(fetchedWords);
+	fillInTheListOfWords(listForWordsFromStorage, classes.wordInList, 'allWords');
+});
+
+listForWordsFromStorage.addEventListener('click', (e) => {
+	let target = e.target;
+
+	if (window.innerWidth <= 992) {
+		removeClassesForBurger();
+	}
+
+	if (target.classList.contains(classes.wordsListFromStorage)) {
+		return 0;
+	}
+
+	if (!target.classList.contains(classes.wordInList)) {
+		target = target.parentElement;
+	}
+
+	displayFullWordInfo(showFullInfo, target);
+});
+
+searchListResult.addEventListener('click', (e) => {
+	let target = e.target;
+
+	if (window.innerWidth <= 992) {
+		removeClassesForBurger();
+	}
+
+	searchingInput.value = '';
+	searchResult.style.display = 'none';
+
+	if (target.classList.contains(classes.wordsListForSearchedWords)) {
+		return 0;
+	}
+
+	if (!target.classList.contains(classes.searchedWord)) {
+		target = target.parentElement;
+	}
+
+	displayFullWordInfo(showFullInfo, target);
 });
 
 addNewWordForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 
-	let newWord = addNewWordForm['new-word'].value;
-	let translation = addNewWordForm['translation'].value;
-	let otherTranslations = addNewWordForm['other-translations'].value;
-	let examples = addNewWordForm['examples'].value;
-	let synonyms = addNewWordForm['synonyms'].value;
-	let antonyms = addNewWordForm['antonyms'].value;
+	const examplesChildren = Array.from(addNewWordForm['use-examples'].children),
+		examplesArray = [];
+
+	for (let i = 0; i < examplesChildren.length; i += 2) {
+		if (!examplesChildren[i].value || !examplesChildren[i + 1].value) continue;
+		examplesArray.push(`${examplesChildren[i].value}-${examplesChildren[i + 1].value}`);
+	}
+
+	const newWord = addNewWordForm['new-word'].value,
+		translation = addNewWordForm['translation'].value,
+		otherTranslations = addNewWordForm['other-translations'].value,
+		examples = examplesArray,
+		synonyms = addNewWordForm['synonyms'].value,
+		antonyms = addNewWordForm['antonyms'].value;
 
 	localStorage.setItem(`${newWord}`, JSON.stringify({
 		"word": newWord,
 		"translation": translation,
-		"Other_translations": otherTranslations,
-		"Use_examples": examples.split('\n'),
-		"Synonyms": synonyms,
-		"Antonyms": antonyms,
+		"other_translations": otherTranslations,
+		"use_examples": examples,
+		"synonyms": synonyms,
+		"antonyms": antonyms,
 	}));
 
 	Array.from(addNewWordForm.elements).forEach(element => element.value = '');
 
-	fillInTheListOfWords(wordsList, "words__word", 'allWords');
+	if (examplesChildren.length > 2) {
+		examplesChildren.forEach((child, index) => {
+			if (index > 1) {
+				child.remove();
+			}
+		})
+	}
+
+	fillInTheListOfWords(listForWordsFromStorage, classes.wordInList, 'allWords');
 });
 
 searchingInput.addEventListener('input', () => {
 	const printedText = searchingInput.value.toLowerCase();
 
-	fillInTheListOfWords(searchListResult, "results-search__word", 'singleWord', printedText);
+	if (searchingInput.value) {
+		searchResult.style.display = 'block';
+	} else {
+		searchResult.style.display = 'none';
+	}
+
+	fillInTheListOfWords(searchListResult, classes.searchedWord, 'singleWord', printedText);
 });

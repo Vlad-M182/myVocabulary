@@ -104,7 +104,7 @@ body {
 }
 
 body._lock {
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
 .wrapper {
@@ -327,10 +327,6 @@ body._lock {
           box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
 
-.section-search__form input:focus + .section-search__search-results {
-  display: block;
-}
-
 .section-search__input {
   position: relative;
   -webkit-box-flex: 0;
@@ -401,7 +397,7 @@ body._lock {
 .words__list {
   scrollbar-color: #7A7A7A #E0E0E0;
   scrollbar-width: thin;
-  height: 100%;
+  height: 89%;
   overflow-y: auto;
 }
 
@@ -425,6 +421,7 @@ body._lock {
 .show-word {
   padding: 20px 0;
   max-height: 100%;
+  max-width: 500px;
   -webkit-box-flex: 0;
       -ms-flex: 0 1 50%;
           flex: 0 1 50%;
@@ -461,6 +458,15 @@ body._lock {
 .show-word__button {
   display: block;
   margin: 0 auto;
+}
+
+.example {
+  margin: 0px 0px 5px 0px;
+}
+
+.translate {
+  margin: 0px 0px 10px 0px;
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .decor {
@@ -518,6 +524,17 @@ body._lock {
 .add-word__form button {
   display: block;
   margin: 0 auto;
+}
+
+.add-new-field {
+  padding: 7px;
+  display: block;
+  margin: 0px 0px 15px 0px;
+}
+
+.add-new-field img {
+  width: 20px;
+  height: 20px;
 }
 
 @media (max-width: 992px) {
@@ -584,6 +601,7 @@ body._lock {
 
   .show-word {
     overflow-y: initial;
+    max-height: none;
   }
 
   .decor {

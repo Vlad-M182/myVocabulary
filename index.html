@@ -7,8 +7,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="css/style.css">
-	<title>Document</title>
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<title>My vocabulary</title>
+	<link rel="icon" href="images/vocabulary.png" type="image/x-icon">
 </head>
 
 <body>
@@ -61,8 +61,15 @@
 									placeholder="Translation">
 								<input class="add-word__other-translations" type="text" name="other-translations" value=""
 									placeholder="Other-translations">
-								<textarea class="add-word__examples" name="examples"
-									placeholder="Use exmple or exmples"></textarea>
+								<fieldset name="use-examples">
+									<textarea class="add-word__examples" name="example1"
+										placeholder="Enter example №1"></textarea>
+									<textarea class="add-word__examples" name="translate-to-example1"
+										placeholder="Enter translate to example №1"></textarea>
+								</fieldset>
+								<button class="add-new-field button" type="button">
+									<img src="images/plus-solid.svg" alt="plus">
+								</button>
 								<input class="add-word__synonyms" type="text" name="synonyms" value="" placeholder="Synonyms">
 								<input class="add-word__antonyms" type="text" name="antonyms" value="" placeholder="Antonyms">
 								<button class="add-word__button button" type="submit">Add the word</button>
